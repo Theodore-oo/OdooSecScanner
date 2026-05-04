@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odoo Module Security Scanner | OWASP 2025</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark glass-nav fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold font-outfit" href="#">
+                <i class="fa-solid fa-shield-halved text-neon-primary me-2"></i> OdooSec<span class="text-neon-secondary">Scanner</span>
+            </a>
+            <span class="badge bg-neon-primary ms-auto px-3 py-2 rounded-pill shadow-glow">OWASP Top 10 2025</span>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container main-container pt-5 mt-5">
+        
+        <!-- Header -->
+        <div class="text-center mb-5 fade-in">
+            <h1 class="display-4 fw-bold font-outfit mb-3">Secure Your <span class="text-gradient">Odoo Modules</span></h1>
+            <p class="lead text-muted">Upload your Odoo module ZIP file to scan for vulnerabilities mapped to the latest OWASP Top 10 2025 framework.</p>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="row justify-content-center mb-5 fade-in delay-1">
+            <div class="col-lg-8">
+                <div class="upload-card card glass-card p-5 text-center" id="drop-zone">
+                    <input type="file" id="file-input" class="d-none" accept=".zip">
+                    <div class="upload-icon mb-4">
+                        <i class="fa-solid fa-cloud-arrow-up display-1 text-neon-primary"></i>
+                    </div>
+                    <h3 class="font-outfit fw-bold mb-2">Drag & Drop your ZIP file here</h3>
+                    <p class="text-muted mb-4">or click to browse your files</p>
+                    <button class="btn btn-neon-primary rounded-pill px-5 py-3 fw-bold" onclick="document.getElementById('file-input').click()">
+                        Select Module
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading-section" class="text-center d-none mb-5">
+            <div class="spinner-border text-neon-secondary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <h4 class="font-outfit">Analyzing Codebase...</h4>
+            <p class="text-muted">Running static analysis and AST checks.</p>
+        </div>
+
+        <!-- Results Section (Hidden by default) -->
+        <div id="results-section" class="d-none fade-in">
+            
+            <!-- Dashboard Top -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-4">
+                    <div class="card glass-card h-100 text-center score-card">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h5 class="card-title text-muted mb-4 font-outfit">Security Score</h5>
+                            <div class="score-circle" id="score-display">
+                                <span id="score-value">100</span>
+                            </div>
+                            <p class="mt-4 text-muted" id="score-text">Excellent</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 mb-4">
+                    <div class="card glass-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-muted mb-4 font-outfit">Vulnerability Breakdown</h5>
+                            <div class="chart-container" style="position: relative; height:300px; width:100%">
+                                <canvas id="radarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Findings List -->
+            <div class="card glass-card mb-5">
+                <div class="card-header bg-transparent border-bottom border-secondary p-4 d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 font-outfit fw-bold"><i class="fa-solid fa-list-check text-neon-primary me-2"></i> Detailed Findings</h4>
+                    <span class="badge bg-danger rounded-pill px-3 py-2" id="total-issues-badge">0 Issues Found</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover mb-0 custom-table">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Category</th>
+                                    <th>File Location</th>
+                                    <th>Line</th>
+                                    <th class="pe-4">Issue Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="findings-table-body">
+                                <!-- Dynamic Content -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="no-issues-state" class="text-center p-5 d-none">
+                        <i class="fa-solid fa-shield-check display-1 text-success mb-3"></i>
+                        <h3 class="font-outfit text-success">No vulnerabilities found!</h3>
+                        <p class="text-muted">Your module looks clean based on our current ruleset.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.css"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom JS -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
